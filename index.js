@@ -1,11 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const indexRouter=require("./routes");
+const morgan=require("morgan");//loger
 
 const app = express();
 const PORT=Number(process.env.PORT);
 
 app.use(express.json());
+app.use(morgan("dev"));
 app.use("/assets",express.static("public"));//static files
 //middleware
 app.use((req,res,next)=>{ 
