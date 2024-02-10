@@ -20,4 +20,4 @@ post=>creat new data(client to server) eg:{name,page,auther}
 put=>Update more than 1 data of  existing data (client to sever)
 patch=>Update only one   single data of  existing data (client to sever)
 delete=>remove the existing data from server(cient to server)
-error handling/exception handling
+error handling/exception handlingnpm

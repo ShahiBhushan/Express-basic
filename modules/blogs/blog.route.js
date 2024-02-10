@@ -1,31 +1,67 @@
 const router = require("express").Router();
-router.get("/", (req, res) => {
-  res.json({ msg: "hello from blog router" });
+const blogController = require("./blog.controller");
+const {validate}= require("./blog.validator");
+
+router.get("/", validate,async (req, res, next) => {
+  try {
+    const result = await blogController.getAll();
+    res.json({ data: result });
+  } catch (e) {
+    next(e);
+  }
 });
-const mw=(req,res,next)=>{
-  req.body.country="Nepal";
-    next();
-};
-//try and catch
-// router.post("/", (req, res, next) => {
+router.get("/:id", validate,async (req, res, next) => {
+  try {
+    const result = await blogController.getById();
+    res.json({ data:result});
+  } catch (e) {
+    next(e);
+  }
+});
+
+
+router.post("/:id", validate,async(req, res,next) => {
+try{
+  const data =req.body;
+  const result=await blogController.create(data);
+  res.json({ data:result });}
+  catch(e){
+    next(e);
+  }
+});
+
+
+// router.patch("/:id", (req, res) => {
+//   res.json({ msg: "hello from blog  patch router" });
+// });
+
+// router.delete("/:id", (req, res) => {
+//   res.json({ msg: "hello from blog  deleterouter" });
+// });
+// const mw = (req, res, next) => {
+//   req.body.country = "Nepal";
+//   next();
+// };
+// //try and catch
+// // router.post("/", (req, res, next) => {
+// //   try {
+// //    // StyleSheetList;
+// //     res.json({ msg: "hello from blog  post router" });
+// //   } catch (err) {
+// //     next(err);
+// //   }
+// // });
+// //or throw error
+// router.post("/", mw,async(req, res, next) => {
 //   try {
-//    // StyleSheetList;
+//     const { title } = req.body;
+//     if (!title) throw new Error("Title is missing");
+//     console.log(req.body); //for middleware
 //     res.json({ msg: "hello from blog  post router" });
 //   } catch (err) {
 //     next(err);
 //   }
 // });
-//or throw error
-router.post("/", mw,(req, res, next) => {
-  try {
-    const { title } = req.body;
-    if (!title) throw new Error("Title is missing");
-    console.log(req.body); //for middleware
-    res.json({ msg: "hello from blog  post router" });
-  } catch (err) {
-    next(err);
-  }
-});
 //finally
 //  router.post("/", (req, res, next) => {
 //     let counter=0;
@@ -40,17 +76,4 @@ router.post("/", mw,(req, res, next) => {
 //     console.log({counter});
 //     }
 //      });
-
-router.put("/:id", (req, res) => {
-  res.json({ msg: "hello from blog put router" });
-});
-
-router.patch("/:id", (req, res) => {
-  res.json({ msg: "hello from blog  patch router" });
-});
-
-router.delete("/:id", (req, res) => {
-  res.json({ msg: "hello from blog  deleterouter" });
-});
-
 module.exports = router;
